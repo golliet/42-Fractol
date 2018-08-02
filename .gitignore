@@ -1,0 +1,9 @@
+*.o
+obj/*.o
+.swp
+fdf
+libft/libft.a
+minilinx/liblmx.a
+.DS_Store
+**/**.c-e
+**/**.h-e
