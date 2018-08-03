@@ -7,10 +7,9 @@ void		init_july(t_img *img, double h)
 	img->zone.x2 = 2.5 - h;
 	img->zone.y1 = -2 + h;
 	img->zone.y2 = 2 - h;
-	img->iteration = 25;
+	img->iteration = 150;
 	img->zoom_x = WIN_X / (img->zone.x2 - img->zone.x1);
 	img->zoom_y = WIN_Y / (img->zone.y2 - img->zone.y1);
-	printf("%f %f\n", img->zoom_x,img->zoom_y);
 }
 
 void		loop_july(t_img *img, t_set set)
@@ -45,7 +44,7 @@ void		loop_july(t_img *img, t_set set)
 			if (i == img->iteration)
 				ft_change_color(img, x, y, (t_color){0,0,0});
 			else
-				ft_change_color(img, x, y, modulate_color(i, choose_color(set, i), img->iteration));
+				ft_change_color(img, x, y, modulate_color(i, choose_color(set, i)));
 			y++;
 		}
 		x++;

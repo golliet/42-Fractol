@@ -94,7 +94,7 @@ void				ft_change_color(t_img *img, int x, int y, t_color color);
 
 t_set				init_color(int i);
 t_color				choose_color(t_set col, int i);
-t_color				modulate_color(int n, t_color color, int iter);
+t_color				modulate_color(int n, t_color color);
 
 /*
 ** HOOK

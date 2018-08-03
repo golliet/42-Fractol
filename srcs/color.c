@@ -43,11 +43,14 @@ t_color		choose_color(t_set col, int n)
 	return (col.c0);
 }
 
-t_color		modulate_color(int n, t_color color, int iter)
+t_color		modulate_color(int n, t_color color)
 {
 	t_color tmp;
-	tmp.red =  n * color.red / iter;
-	tmp.blue = n * color.blue / iter;
-	tmp.green = n * color.green / iter;
+
+	if(n == 0)
+		n =1;
+	tmp.red = color.red - color.red / n;
+	tmp.blue = color.blue - color.blue / n;
+	tmp.green = color.green - color.green / n;
 	return (tmp);
 }
