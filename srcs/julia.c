@@ -7,7 +7,7 @@ void		init_july(t_img *img, double h)
 	img->zone.x2 = 2.5 - h;
 	img->zone.y1 = -2 + h;
 	img->zone.y2 = 2 - h;
-	img->iteration = 150;
+	img->iteration = 25;
 	img->zoom_x = WIN_X / (img->zone.x2 - img->zone.x1);
 	img->zoom_y = WIN_Y / (img->zone.y2 - img->zone.y1);
 }

@@ -44,7 +44,7 @@ void		loop_third(t_img *img, t_set set)
 			if (i == img->iteration)
 				ft_change_color(img, x, y, (t_color){0,0,0});
 			else
-				ft_change_color(img, x, y, modulate_color(i, choose_color(set, i), img->iteration));
+				ft_change_color(img, x, y, modulate_color(i, choose_color(set, i)));
 			y++;
 		}
 		x++;

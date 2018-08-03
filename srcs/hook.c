@@ -19,21 +19,11 @@ double				ft_calc_x(int x)
 	double pos;
 
 	scale = 2 / PAS;
-	nb_pos = WIN_X / 2 / scale;
+	nb_pos = WIN_X / scale;
 	if (x >= WIN_X/2)
-	{
-		if (x >= WIN_X/2 + WIN_X/4)
-			pos = (x / nb_pos) * PAS -1;
-		if (x < WIN_X/2 + WIN_X/4)
-			pos = -((WIN_X/4 - x) / nb_pos) * PAS;
-	}
-	else
-	{
-		if (x >= WIN_X/4)
-			pos = (x / nb_pos) * PAS -1;
-		if (x < WIN_X/4)
-			pos = -((WIN_X/4 - x) / nb_pos) * PAS;
-	}
+		pos = (x / nb_pos) * PAS - 1;
+	if (x < WIN_X/2)
+		pos = -((WIN_X/2 - x) / nb_pos) * PAS;
 	return (pos);
 }
 
@@ -46,10 +36,7 @@ double				ft_calc_y(int y)
 
 	scale = 1 / PAS2;
 	nb_pos = WIN_Y / scale;
-	if (y >= WIN_Y/2 + WIN_Y/4)
-		pos = (y / nb_pos) * PAS -1;
-	if (y < WIN_Y/2 + WIN_Y/4)
-		pos = -((WIN_Y/4 - y) / nb_pos) * PAS;
+	pos = (y / nb_pos) * PAS2 -1;
 	return (pos);
 }
 
