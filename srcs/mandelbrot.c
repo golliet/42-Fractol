@@ -1,18 +1,18 @@
 
 # include "fractol.h"
 
-void		init_man(t_img *img)
+void		init_man(t_img *img, double h)
 {
-	img->zone.x1 = -2.1;
-	img->zone.x2 = 0.6;
-	img->zone.y1 = -1.2;
-	img->zone.y2 = 1.2;
+	img->zone.x1 = -2.1 + h;
+	img->zone.x2 = 0.6 + h;
+	img->zone.y1 = -1.2 - h;
+	img->zone.y2 = 1.2 - h;
 	img->iteration = 25;
 	img->zoom_x = WIN_X / (img->zone.x2 - img->zone.x1);
 	img->zoom_y = WIN_Y / (img->zone.y2 - img->zone.y1);
 }
 
-void		loop_man(t_img *img)
+void		loop_man(t_img *img, t_set set)
 {
 	double		p_real;
 	double		p_imag;
@@ -22,6 +22,8 @@ void		loop_man(t_img *img)
 	int		i;
 	int		x;
 	int		y;
+
+	(void)set;
 
 	x = 0;
 	while (x < WIN_X)
@@ -44,7 +46,7 @@ void		loop_man(t_img *img)
 			if (i == img->iteration)
 				ft_change_color(img, x, y, (t_color){255,255,255});
 			else
-				ft_change_color(img, x, y, (t_color){i * 255 / img->iteration ,0, 0});
+				ft_change_color(img, x, y, modulate_color(i, choose_color(set, i), img->iteration));
 			y++;
 		}
 		x++;

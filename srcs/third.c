@@ -1,19 +1,18 @@
 
 # include "fractol.h"
 
-void		init_july(t_img *img, double h)
+void		init_third(t_img *img)
 {
-	img->zone.x1 = -2.5 + h;
-	img->zone.x2 = 2.5 - h;
-	img->zone.y1 = -2 + h;
-	img->zone.y2 = 2 - h;
-	img->iteration = 25;
+	img->zone.x1 = -2.5;
+	img->zone.x2 = 2.5;
+	img->zone.y1 = -1.5;
+	img->zone.y2 = 1;
+	img->iteration = 40;
 	img->zoom_x = WIN_X / (img->zone.x2 - img->zone.x1);
-	img->zoom_y = WIN_Y / (img->zone.y2 - img->zone.y1);
-	printf("%f %f\n", img->zoom_x,img->zoom_y);
+	img->zoom_y = WIN_Y / (img->zone.y2 - img->zone.y1) * 0.8;
 }
 
-void		loop_july(t_img *img, t_set set)
+void		loop_third(t_img *img, t_set set)
 {
 	double		p_real;
 	double		p_imag;
@@ -30,10 +29,10 @@ void		loop_july(t_img *img, t_set set)
 		y = 0;
 		while (y < WIN_Y)
 		{
-			p_real = img->j_r;
-			p_imag = img->j_i;
-			z_real = x / img->zoom_x + img->zone.x1;
-			z_imag = y / img->zoom_y + img->zone.y1;
+			p_real = y / img->zoom_y + img->zone.y1;
+			p_imag = x / img->zoom_x + img->zone.x1;
+			z_real = x / img->zoom_x;
+			z_imag = y / img->zoom_y;
 			i = 0;
 			while ((z_real * z_real + z_imag * z_imag) < 4 && i < img->iteration)
 			{

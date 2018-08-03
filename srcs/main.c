@@ -9,41 +9,22 @@ int		display_erro(void)
 	return (0);
 }
 
-void            ft_change_color(t_img *img, int x, int y, t_color color)
-{
-        int nb;
-
-        if (x < 0 || y < 0)
-                return ;
-        if (x >= WIN_X || y >= WIN_Y)
-                return ;
-        nb = y * img->size_line + (img->bit_p/8) * x;
-        img->zone_mem[nb] = color.red;
-        img->zone_mem[nb + 1] = color.green;
-        img->zone_mem[nb + 2] = color.blue;
-}
-
-int esc_hook(int keycode, void *param)
-{
-        if (keycode == ESC)
-        {
-                (void)param;
-                exit(0);
-        }
-        return (1);
-}
-
-void			selector(int fractal, t_img *img)
+void			selector(int fractal, t_img *img, t_set set)
 {
 	if (fractal == MANDELBROT)
 	{
-		init_man(img);
-		loop_man(img);
+		init_man(img, 0.3);
+		loop_man(img, set);
 	}
 	else if (fractal == JULIA)
 	{
-		init_july(img);
-		loop_july(img);
+		init_july(img, 0);        // -2 => 2.3
+		loop_july(img, set);
+	}
+	else if (fractal == THIRD)
+	{
+		init_third(img);
+		loop_third(img, set);
 	}
 }
 
@@ -53,18 +34,23 @@ void            go(int fractal)
 	void    *win_ptr;
 	void    *img_ptr;
 	t_img   img;
-
-	(void)fractal;
+	t_set	set;
 
 	mlx_ptr = mlx_init();
+	img.mlx_ptr = mlx_ptr;
 	win_ptr = mlx_new_window(mlx_ptr,WIN_X, WIN_Y, "ntm");
+	img.win_ptr = win_ptr;
 	img_ptr = mlx_new_image(mlx_ptr, WIN_X, WIN_Y);
+	img.img_ptr = img_ptr;
+	img.j_r = -0.8;
+	img.j_i = -0.15;
+	img.fractal = fractal;
 	img.zone_mem = (unsigned char *)mlx_get_data_addr(img_ptr, &img.bit_p, &img.size_line, &img.endian);
-
-	selector(fractal, &img);
-
+	set = init_color(0);
+	selector(fractal, &img, set);
 	mlx_put_image_to_window(mlx_ptr, win_ptr, img_ptr, 0, 0);
-	mlx_key_hook(win_ptr, esc_hook, NULL);
+	mlx_hook(win_ptr, 6, 1L << 8, &ft_mouse, &img);
+	mlx_key_hook(win_ptr, esc_hook, &img);
 	mlx_loop(mlx_ptr);
 }
 
@@ -76,6 +62,8 @@ int main(int argc, char **argv)
 			go(MANDELBROT);
 		else if (ft_strcmp(argv[1], "Julia") == 0)
 			go(JULIA);
+		else if (ft_strcmp(argv[1], "Third") == 0)
+			go(THIRD);
 		else
 			return (display_erro());
 	}
@@ -83,3 +71,17 @@ int main(int argc, char **argv)
 		display_erro();
 	return (0);
 }
+
+
+
+/*
+
+
+
+mlx_hook(param->win->win_ptr, 6, 1L << 8, &ft_mouse, (void*)param);
+mlx_hook(param->win->win_ptr, 4, 1 << 11, &ft_mouse_wheel, (void*)param); (modifié)
+int    ft_mouse(int x, int y, void *param) (modifié)
+int    ft_mouse_wheel(int key, int x, int y, void *param) (modifié)
+
+
+*/
