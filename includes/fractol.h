@@ -16,7 +16,26 @@
 # define PAS 0.01
 # define PAS2 0.005
 
-# define ESC 53
+# define KEY_ESC 53
+# define PAD_MINUS 78
+# define PAD_PLUS 69
+# define RIGHT_CLICK 1
+# define LEFT_CLICK 2
+# define SCROLL_UP 4
+# define SCROLL_DOWN 5
+# define KEY_ENTER 36
+# define KEY_MINUS 27
+# define KEY_PLUS 24
+# define KEY_1 18
+# define KEY_2 19
+# define KEY_3 20
+# define KEY_4 21
+# define KEY_LEFT 124
+# define KEY_DOWN 126
+# define KEY_RIGHT 123
+# define KEY_UP 125
+# define KEY_SPACE 49
+# define KEY_A 0
 
 typedef struct					s_zone
 {
@@ -42,6 +61,7 @@ typedef struct					s_img
 	void					*win_ptr;
 	void					*mlx_ptr;
 	void					*img_ptr;
+	double					zoom;
 }								t_img;
 
 typedef struct					s_color
@@ -101,6 +121,7 @@ t_color				modulate_color(int n, t_color color);
 */
 
 int 				esc_hook(int keycode, void *param);
+int					ft_mouse_wheel(int key, int x, int y, void *param);
 int    				ft_mouse(int x, int y, void *param);
 
 /*

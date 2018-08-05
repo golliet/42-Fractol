@@ -3,11 +3,11 @@
 
 void		init_man(t_img *img, double h)
 {
-	img->zone.x1 = -2.1 + h;
-	img->zone.x2 = 0.6 + h;
-	img->zone.y1 = -1.2 - h;
-	img->zone.y2 = 1.2 - h;
-	img->iteration = 25;
+	img->zone.x1 = -2.1 + h/1.2;
+	img->zone.x2 = 2.1 - h/1.2;
+	img->zone.y1 = -1.2 + h/2.1;
+	img->zone.y2 = 1.2 - h/2.1;
+	img->iteration = 100;
 	img->zoom_x = WIN_X / (img->zone.x2 - img->zone.x1);
 	img->zoom_y = WIN_Y / (img->zone.y2 - img->zone.y1);
 }
@@ -22,8 +22,6 @@ void		loop_man(t_img *img, t_set set)
 	int		i;
 	int		x;
 	int		y;
-
-	(void)set;
 
 	x = 0;
 	while (x < WIN_X)

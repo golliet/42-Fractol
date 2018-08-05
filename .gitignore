@@ -1,7 +1,7 @@
 *.o
 obj/*.o
 .swp
-fdf
+fractol
 libft/libft.a
 minilinx/liblmx.a
 .DS_Store
