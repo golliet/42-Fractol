@@ -7,7 +7,7 @@
 # include <mlx.h>
 # include <math.h>
 
-# define MANDELBROT 1
+# define BROT 1
 # define JULIA 2
 # define THIRD 3
 
@@ -99,7 +99,7 @@ void				loop_july(t_img *img, t_set set);
 ** third
 */
 
-void				init_third(t_img *img);
+void				init_third(t_img *img, double h);
 void				loop_third(t_img *img, t_set set);
 
 /*

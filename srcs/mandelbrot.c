@@ -7,7 +7,7 @@ void		init_man(t_img *img, double h)
 	img->zone.x2 = 2.1 - h/1.2;
 	img->zone.y1 = -1.2 + h/2.1;
 	img->zone.y2 = 1.2 - h/2.1;
-	img->iteration = 100;
+	img->iteration = img->iteration;
 	img->zoom_x = WIN_X / (img->zone.x2 - img->zone.x1);
 	img->zoom_y = WIN_Y / (img->zone.y2 - img->zone.y1);
 }
@@ -42,7 +42,7 @@ void		loop_man(t_img *img, t_set set)
 				i++;
 			}
 			if (i == img->iteration)
-				ft_change_color(img, x, y, (t_color){255,255,255});
+				ft_change_color(img, x, y, (t_color){0,0,0});
 			else
 				ft_change_color(img, x, y, modulate_color(i, choose_color(set, i)));
 			y++;

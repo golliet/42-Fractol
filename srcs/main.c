@@ -6,12 +6,13 @@ int		display_erro(void)
 	ft_putendl_fd("usage : ./fractol + [fractal]", 2);
 	ft_putendl_fd(" - Mandelbrot", 2);
 	ft_putendl_fd(" - Julia", 2);
+	ft_putendl_fd(" - Burning", 2);
 	return (0);
 }
 
 void			selector(int fractal, t_img *img, t_set set)
 {
-	if (fractal == MANDELBROT)
+	if (fractal == BROT)
 	{
 		init_man(img, img->zoom);
 		loop_man(img, set);
@@ -23,7 +24,7 @@ void			selector(int fractal, t_img *img, t_set set)
 	}
 	else if (fractal == THIRD)
 	{
-		init_third(img);
+		init_third(img, img->zoom);
 		loop_third(img, set);
 	}
 }
@@ -62,10 +63,10 @@ int main(int argc, char **argv)
 	if (argc == 2)
 	{
 		if (ft_strcmp(argv[1], "Mandelbrot") == 0)
-			go(MANDELBROT);
+			go(BROT);
 		else if (ft_strcmp(argv[1], "Julia") == 0)
 			go(JULIA);
-		else if (ft_strcmp(argv[1], "Third") == 0)
+		else if (ft_strcmp(argv[1], "Burning") == 0)
 			go(THIRD);
 		else
 			return (display_erro());
