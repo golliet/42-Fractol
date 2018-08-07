@@ -6,7 +6,7 @@
 /*   By: golliet <golliet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/09 07:59:35 by golliet           #+#    #+#             */
-/*   Updated: 2018/08/07 11:11:06 by golliet          ###   ########.fr       */
+/*   Updated: 2018/08/07 16:57:11 by golliet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@
 # define JULIA 2
 # define THIRD 3
 
-# define WIN_X 600
-# define WIN_Y 400
+# define WIN_X 1200
+# define WIN_Y 900
 # define PAS 0.01
 # define PAS2 0.005
 
@@ -74,6 +74,7 @@ typedef struct			s_img
 	void				*mlx_ptr;
 	void				*img_ptr;
 	double				zoom;
+	int					color;
 }						t_img;
 
 typedef struct			s_color

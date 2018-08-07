@@ -6,23 +6,37 @@
 /*   By: golliet <golliet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/09 07:59:35 by golliet           #+#    #+#             */
-/*   Updated: 2018/08/07 10:39:25 by golliet          ###   ########.fr       */
+/*   Updated: 2018/08/07 17:04:57 by golliet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-static int			help_esc(t_img *img)
+static int			help_esc(t_img *img, int keycode)
 {
-	if (img->iteration > 500)
-		return (0);
-	img->iteration += 10;
-	mlx_destroy_image(img->mlx_ptr, img->img_ptr);
-	img->img_ptr = mlx_new_image(img->mlx_ptr, WIN_X, WIN_Y);
-	img->zone_mem = (unsigned char *)mlx_get_data_addr(img->img_ptr,
-						&img->bit_p, &img->size_line, &img->endian);
-	selector(img->fractal, img, init_color(0));
-	mlx_put_image_to_window(img->mlx_ptr, img->win_ptr, img->img_ptr, 0, 0);
+	if (keycode == KEY_DOWN)
+	{
+		if (img->iteration > 500)
+			return (0);
+		img->iteration += 10;
+		mlx_destroy_image(img->mlx_ptr, img->img_ptr);
+		img->img_ptr = mlx_new_image(img->mlx_ptr, WIN_X, WIN_Y);
+		img->zone_mem = (unsigned char *)mlx_get_data_addr(img->img_ptr,
+							&img->bit_p, &img->size_line, &img->endian);
+		selector(img->fractal, img, init_color(img->color));
+		mlx_put_image_to_window(img->mlx_ptr, img->win_ptr, img->img_ptr, 0, 0);
+	}
+	else
+	{
+		img->color += 1;
+		img->color = img->color % 6;
+		mlx_destroy_image(img->mlx_ptr, img->img_ptr);
+		img->img_ptr = mlx_new_image(img->mlx_ptr, WIN_X, WIN_Y);
+		img->zone_mem = (unsigned char *)mlx_get_data_addr(img->img_ptr,
+								&img->bit_p, &img->size_line, &img->endian);
+		selector(img->fractal, img, init_color(img->color));
+		mlx_put_image_to_window(img->mlx_ptr, img->win_ptr, img->img_ptr, 0, 0);
+	}
 	return (1);
 }
 
@@ -37,7 +51,7 @@ int					esc_hook(int keycode, void *param)
 		exit(1);
 	}
 	if (keycode == KEY_DOWN)
-		return (help_esc(img));
+		return (help_esc(img, keycode));
 	if (keycode == KEY_UP)
 	{
 		if (img->iteration < 10)
@@ -47,9 +61,11 @@ int					esc_hook(int keycode, void *param)
 		img->img_ptr = mlx_new_image(img->mlx_ptr, WIN_X, WIN_Y);
 		img->zone_mem = (unsigned char *)mlx_get_data_addr(img->img_ptr,
 								&img->bit_p, &img->size_line, &img->endian);
-		selector(img->fractal, img, init_color(0));
+		selector(img->fractal, img, init_color(img->color));
 		mlx_put_image_to_window(img->mlx_ptr, img->win_ptr, img->img_ptr, 0, 0);
 	}
+	if (keycode == KEY_ENTER)
+		return (help_esc(img, keycode));
 	return (1);
 }
 
@@ -95,7 +111,7 @@ int					ft_mouse(int x, int y, void *param)
 									&img->bit_p, &img->size_line, &img->endian);
 		img->j_r = ft_calc_x(x);
 		img->j_i = ft_calc_y(y);
-		selector(img->fractal, img, init_color(0));
+		selector(img->fractal, img, init_color(img->color));
 		mlx_put_image_to_window(img->mlx_ptr, img->win_ptr, img->img_ptr, 0, 0);
 	}
 	return (1);

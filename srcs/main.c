@@ -6,7 +6,7 @@
 /*   By: golliet <golliet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/09 07:59:35 by golliet           #+#    #+#             */
-/*   Updated: 2018/08/07 11:13:47 by golliet          ###   ########.fr       */
+/*   Updated: 2018/08/07 16:58:34 by golliet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ void			init_img(t_img *img, int fractal)
 	img->zoom = 0;
 	img->fractal = fractal;
 	img->iteration = 25;
+	img->color = 0;
 }
 
 void			go(int fractal)
@@ -69,7 +70,7 @@ void			go(int fractal)
 	init_img(&img, fractal);
 	img.zone_mem = (unsigned char *)mlx_get_data_addr(img_ptr,
 						&img.bit_p, &img.size_line, &img.endian);
-	set = init_color(0);
+	set = init_color(img.color);
 	selector(fractal, &img, set);
 	mlx_put_image_to_window(mlx_ptr, win_ptr, img_ptr, 0, 0);
 	mlx_hook(win_ptr, 6, 1L << 8, &ft_mouse, &img);
