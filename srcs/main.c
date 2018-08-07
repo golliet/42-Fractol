@@ -1,7 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: golliet <golliet@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/11/09 07:59:35 by golliet           #+#    #+#             */
+/*   Updated: 2018/08/07 11:13:47 by golliet          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "fractol.h"
 
-int		display_erro(void)
+int				display_erro(void)
 {
 	ft_putendl_fd("usage : ./fractol + [fractal]", 2);
 	ft_putendl_fd(" - Mandelbrot", 2);
@@ -12,43 +23,52 @@ int		display_erro(void)
 
 void			selector(int fractal, t_img *img, t_set set)
 {
+	t_var var;
+
+	var.x = 0;
 	if (fractal == BROT)
 	{
 		init_man(img, img->zoom);
-		loop_man(img, set);
+		loop_man(img, set, &var);
 	}
 	else if (fractal == JULIA)
 	{
 		init_july(img, img->zoom);
-		loop_july(img, set);
+		loop_july(img, set, &var);
 	}
 	else if (fractal == THIRD)
 	{
 		init_third(img, img->zoom);
-		loop_third(img, set);
+		loop_third(img, set, &var);
 	}
 }
 
-void            go(int fractal)
+void			init_img(t_img *img, int fractal)
 {
-	void    *mlx_ptr;
-	void    *win_ptr;
-	void    *img_ptr;
-	t_img   img;
+	img->j_r = -0.8;
+	img->j_i = -0.15;
+	img->zoom = 0;
+	img->fractal = fractal;
+	img->iteration = 25;
+}
+
+void			go(int fractal)
+{
+	void	*mlx_ptr;
+	void	*win_ptr;
+	void	*img_ptr;
+	t_img	img;
 	t_set	set;
 
 	mlx_ptr = mlx_init();
 	img.mlx_ptr = mlx_ptr;
-	win_ptr = mlx_new_window(mlx_ptr,WIN_X, WIN_Y, "ntm");
+	win_ptr = mlx_new_window(mlx_ptr, WIN_X, WIN_Y, "fractol");
 	img.win_ptr = win_ptr;
 	img_ptr = mlx_new_image(mlx_ptr, WIN_X, WIN_Y);
 	img.img_ptr = img_ptr;
-	img.j_r = -0.8;
-	img.j_i = -0.15;
-	img.zoom = 0;
-	img.fractal = fractal;
-	img.iteration = 25;
-	img.zone_mem = (unsigned char *)mlx_get_data_addr(img_ptr, &img.bit_p, &img.size_line, &img.endian);
+	init_img(&img, fractal);
+	img.zone_mem = (unsigned char *)mlx_get_data_addr(img_ptr,
+						&img.bit_p, &img.size_line, &img.endian);
 	set = init_color(0);
 	selector(fractal, &img, set);
 	mlx_put_image_to_window(mlx_ptr, win_ptr, img_ptr, 0, 0);
@@ -58,7 +78,7 @@ void            go(int fractal)
 	mlx_loop(mlx_ptr);
 }
 
-int main(int argc, char **argv)
+int				main(int argc, char **argv)
 {
 	if (argc == 2)
 	{
@@ -75,17 +95,3 @@ int main(int argc, char **argv)
 		display_erro();
 	return (0);
 }
-
-
-
-/*
-
-
-
-mlx_hook(param->win->win_ptr, 6, 1L << 8, &ft_mouse, (void*)param);
-mlx_hook(param->win->win_ptr, 4, 1 << 11, &ft_mouse_wheel, (void*)param); (modifié)
-int    ft_mouse(int x, int y, void *param) (modifié)
-int    ft_mouse_wheel(int key, int x, int y, void *param) (modifié)
-
-
-*/

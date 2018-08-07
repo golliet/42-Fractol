@@ -1,52 +1,61 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   mandelbrot.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: golliet <golliet@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/11/09 07:59:35 by golliet           #+#    #+#             */
+/*   Updated: 2018/08/07 11:19:13 by golliet          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-# include "fractol.h"
+#include "fractol.h"
 
-void		init_man(t_img *img, double h)
+void			init_man(t_img *img, double h)
 {
-	img->zone.x1 = -2.1 + h/1.2;
-	img->zone.x2 = 2.1 - h/1.2;
-	img->zone.y1 = -1.2 + h/2.1;
-	img->zone.y2 = 1.2 - h/2.1;
+	img->zone.x1 = -2.1 + h / 1.2;
+	img->zone.x2 = 2.1 - h / 1.2;
+	img->zone.y1 = -1.2 + h / 2.1;
+	img->zone.y2 = 1.2 - h / 2.1;
 	img->iteration = img->iteration;
 	img->zoom_x = WIN_X / (img->zone.x2 - img->zone.x1);
 	img->zoom_y = WIN_Y / (img->zone.y2 - img->zone.y1);
 }
 
-void		loop_man(t_img *img, t_set set)
+static void		fill(t_var *var, t_img *img)
 {
-	double		p_real;
-	double		p_imag;
-	double		z_real;
-	double		z_imag;
-	double		tmp;
-	int		i;
-	int		x;
-	int		y;
+	var->p_real = var->x / img->zoom_x + img->zone.x1;
+	var->p_i = var->y / img->zoom_y + img->zone.y1;
+	var->z_real = 0;
+	var->z_imag = 0;
+	var->i = 0;
+}
 
-	x = 0;
-	while (x < WIN_X)
+void			loop_man(t_img *img, t_set set, t_var *var)
+{
+	while (var->x < WIN_X)
 	{
-		y = 0;
-		while (y < WIN_Y)
+		var->y = 0;
+		while (var->y < WIN_Y)
 		{
-			p_real = x / img->zoom_x + img->zone.x1;
-			p_imag = y / img->zoom_y + img->zone.y1;
-			z_real = 0;
-			z_imag = 0;
-			i = 0;
-			while ((z_real * z_real + z_imag * z_imag) < 4 && i < img->iteration)
+			fill(var, img);
+			while ((var->z_real * var->z_real + var->z_imag
+			* var->z_imag) < 4 && var->i < img->iteration)
 			{
-				tmp = z_real;
-				z_real = z_real * z_real - z_imag * z_imag + p_real;
-				z_imag = 2 * z_imag * tmp + p_imag;
-				i++;
+				var->tmp = var->z_real;
+				var->z_real = var->z_real * var->z_real
+							- var->z_imag * var->z_imag + var->p_real;
+				var->z_imag = 2 * var->z_imag * var->tmp + var->p_i;
+				var->i++;
 			}
-			if (i == img->iteration)
-				ft_change_color(img, x, y, (t_color){0,0,0});
+			if (var->i == img->iteration)
+				ft_change_color(img, var->x, var->y, (t_color){0, 0, 0});
 			else
-				ft_change_color(img, x, y, modulate_color(i, choose_color(set, i)));
-			y++;
+				ft_change_color(img, var->x, var->y,
+						modulate_color(var->i, choose_color(set, var->i)));
+			var->y++;
 		}
-		x++;
+		var->x++;
 	}
 }

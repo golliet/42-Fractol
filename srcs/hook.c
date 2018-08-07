@@ -1,27 +1,43 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   hook.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: golliet <golliet@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/11/09 07:59:35 by golliet           #+#    #+#             */
+/*   Updated: 2018/08/07 10:39:25 by golliet          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-# include "fractol.h"
+#include "fractol.h"
 
-int esc_hook(int keycode, void *param)
+static int			help_esc(t_img *img)
+{
+	if (img->iteration > 500)
+		return (0);
+	img->iteration += 10;
+	mlx_destroy_image(img->mlx_ptr, img->img_ptr);
+	img->img_ptr = mlx_new_image(img->mlx_ptr, WIN_X, WIN_Y);
+	img->zone_mem = (unsigned char *)mlx_get_data_addr(img->img_ptr,
+						&img->bit_p, &img->size_line, &img->endian);
+	selector(img->fractal, img, init_color(0));
+	mlx_put_image_to_window(img->mlx_ptr, img->win_ptr, img->img_ptr, 0, 0);
+	return (1);
+}
+
+int					esc_hook(int keycode, void *param)
 {
 	t_img *img;
 
 	img = (t_img*)param;
 	if (keycode == KEY_ESC)
 	{
-		(void)param;
-		exit(0);
+		mlx_destroy_image(img->mlx_ptr, img->img_ptr);
+		exit(1);
 	}
 	if (keycode == KEY_DOWN)
-	{
-		if (img->iteration > 250)
-			return (0);
-		img->iteration += 10;
-		mlx_destroy_image(img->mlx_ptr, img->img_ptr);
-		img->img_ptr = mlx_new_image(img->mlx_ptr, WIN_X, WIN_Y);
-		img->zone_mem = (unsigned char *)mlx_get_data_addr(img->img_ptr, &img->bit_p, &img->size_line, &img->endian);
-		selector(img->fractal, img, init_color(0));
-		mlx_put_image_to_window(img->mlx_ptr, img->win_ptr, img->img_ptr, 0, 0);
-	}
+		return (help_esc(img));
 	if (keycode == KEY_UP)
 	{
 		if (img->iteration < 10)
@@ -29,11 +45,12 @@ int esc_hook(int keycode, void *param)
 		img->iteration -= 10;
 		mlx_destroy_image(img->mlx_ptr, img->img_ptr);
 		img->img_ptr = mlx_new_image(img->mlx_ptr, WIN_X, WIN_Y);
-		img->zone_mem = (unsigned char *)mlx_get_data_addr(img->img_ptr, &img->bit_p, &img->size_line, &img->endian);
+		img->zone_mem = (unsigned char *)mlx_get_data_addr(img->img_ptr,
+								&img->bit_p, &img->size_line, &img->endian);
 		selector(img->fractal, img, init_color(0));
 		mlx_put_image_to_window(img->mlx_ptr, img->win_ptr, img->img_ptr, 0, 0);
 	}
-    return (1);
+	return (1);
 }
 
 double				ft_calc_x(int x)
@@ -44,10 +61,10 @@ double				ft_calc_x(int x)
 
 	scale = 2 / PAS;
 	nb_pos = WIN_X / scale;
-	if (x >= WIN_X/2)
+	if (x >= WIN_X / 2)
 		pos = (x / nb_pos) * PAS - 1;
-	if (x < WIN_X/2)
-		pos = -((WIN_X/2 - x) / nb_pos) * PAS;
+	if (x < WIN_X / 2)
+		pos = -((WIN_X / 2 - x) / nb_pos) * PAS;
 	return (pos);
 }
 
@@ -63,7 +80,7 @@ double				ft_calc_y(int y)
 	return (pos);
 }
 
-int    				ft_mouse(int x, int y, void *param)
+int					ft_mouse(int x, int y, void *param)
 {
 	t_img *img;
 
@@ -74,7 +91,8 @@ int    				ft_mouse(int x, int y, void *param)
 	{
 		mlx_destroy_image(img->mlx_ptr, img->img_ptr);
 		img->img_ptr = mlx_new_image(img->mlx_ptr, WIN_X, WIN_Y);
-		img->zone_mem = (unsigned char *)mlx_get_data_addr(img->img_ptr, &img->bit_p, &img->size_line, &img->endian);
+		img->zone_mem = (unsigned char *)mlx_get_data_addr(img->img_ptr,
+									&img->bit_p, &img->size_line, &img->endian);
 		img->j_r = ft_calc_x(x);
 		img->j_i = ft_calc_y(y);
 		selector(img->fractal, img, init_color(0));
